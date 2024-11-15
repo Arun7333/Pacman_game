@@ -242,7 +242,7 @@ public class PacMan extends JPanel implements ActionListener, KeyListener{
         if(isGameOver){
             g.setFont(new Font("Arial", Font.PLAIN, 100));
             g.drawString("Game Over!", tileSize*1, tileSize*10);
-            
+
             g.setFont(new Font("Arial", Font.PLAIN, 50));
             g.drawString("Score: " + score, tileSize*6, tileSize*12);
 
@@ -337,6 +337,11 @@ public class PacMan extends JPanel implements ActionListener, KeyListener{
         }
         foods.remove(eatenFood);
 
+        if(foods.isEmpty()){
+            loadmap();
+            resetPositions();
+        }
+
     }
 
     public void resetPositions(){
@@ -377,6 +382,16 @@ public class PacMan extends JPanel implements ActionListener, KeyListener{
 
     @Override
     public void keyReleased(KeyEvent e) {
+        //restart the game
+        if(e.getKeyCode() == KeyEvent.VK_SPACE){
+            loadmap();
+            resetPositions();
+            lives = 3;
+            score = 0;
+            isGameOver = false;
+            gameLoop.start();
+        }
+
         //to get the key inputs and update the direction
         if(e.getKeyCode() == KeyEvent.VK_UP){
             pacman.updateDirection('U');
