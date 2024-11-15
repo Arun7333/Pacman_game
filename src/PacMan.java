@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.awt.event.*;
 import java.util.Random;
 
-public class PacMan extends JPanel{
+public class PacMan extends JPanel implements ActionListener{
 
     class Block{
         int x;
@@ -75,6 +75,8 @@ public class PacMan extends JPanel{
     HashSet<Block> ghosts;
     Block pacman;
 
+    Timer gameLoop;
+
     PacMan(){
         setPreferredSize(new Dimension(boardWidth, boardHeight));
         setBackground(Color.BLACK);
@@ -92,9 +94,11 @@ public class PacMan extends JPanel{
 
         //load the map
         loadmap();
-        System.out.println(walls.size());
-        System.out.println(foods.size());
-        System.out.println(ghosts.size());
+        
+        //for every 50 milliseconds it repaints the game
+        //(1000/50) = 20fps(frames per second)
+        gameLoop = new Timer(50, this);
+        gameLoop.start();
 
     }
 
@@ -142,6 +146,31 @@ public class PacMan extends JPanel{
         }
     }
 
+    public void paintComponent(Graphics g){
+        super.paintComponent(g);
+        draw(g);
+    }
 
+    public void draw(Graphics g){
+        g.drawImage(pacman.image, pacman.x, pacman.y, pacman.width, pacman.height, null);
+
+        for(Block ghost : ghosts){
+            g.drawImage(ghost.image, ghost.x, ghost.y, ghost.width, ghost.height, null);
+        }
+
+        for(Block wall : walls){
+            g.drawImage(wall.image, wall.x, wall.y, wall.width, wall.height, null);
+        }
+        
+        g.setColor(Color.WHITE);
+        for(Block food : foods){
+            g.fillRect(food.x, food.y, food.width, food.height);
+        }
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        repaint();
+    }
 
 }
