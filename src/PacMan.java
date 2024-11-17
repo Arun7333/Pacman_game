@@ -383,7 +383,7 @@ public class PacMan extends JPanel implements ActionListener, KeyListener{
     @Override
     public void keyReleased(KeyEvent e) {
         //restart the game
-        if(e.getKeyCode() == KeyEvent.VK_SPACE){
+        if(isGameOver &&   e.getKeyCode() == KeyEvent.VK_SPACE){
             loadmap();
             resetPositions();
             lives = 3;
